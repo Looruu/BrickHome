@@ -35,8 +35,8 @@ Este repositorio contiene la implementación técnica, la documentación académ
 La documentación completa del proyecto, incluyendo el Whitepaper, análisis de riesgos y términos legales, está disponible en el directorio `docs/`.
 
 - [Leer Whitepaper Académico]([docs/01-whitepaper/00-resumen-ejecutivo.md](https://github.com/Looruu/BrickHome/tree/main/docs/01-whitepaper)
-- [Ver Arquitectura y Contratos]([docs/01-whitepaper/06-diseno-tecnico.md][(https://github.com/Looruu/BrickHome/tree/main/docs/03-contratos-documentos](https://github.com/Looruu/BrickHome/tree/main/contracts)
-- [Ver Informe de Auditoría de Seguridad][(docs/04-audits-seguridad/informe-auditoria.md)](https://github.com/Looruu/BrickHome/tree/main/docs/04-audits-seguridad)
+- [Ver Arquitectura y Contratos]([docs/01-whitepaper/06-diseno-tecnico.md](https://github.com/Looruu/BrickHome/tree/main/contracts)
+- [Ver Informe de Auditoría de Seguridad][([docs/04-audits-seguridad/informe-auditoria.md)](https://github.com/Looruu/BrickHome/tree/main/docs/04-audits-seguridad))
 - [Ver Términos de Servicio SPV]([docs/01-whitepaper/06-diseno-tecnico.md](https://github.com/Looruu/BrickHome/tree/main/docs/03-contratos-documentos)
 ---
 
