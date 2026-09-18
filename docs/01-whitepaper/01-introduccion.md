@@ -8,16 +8,14 @@ Barreras de entrada elevadas mediante tickets mínimos de inversión restrictivo
 Opacidad operativa e informativa para los inversores minoristas.
 Costes de intermediación que erosionan la rentabilidad neta.
 Descuento por iliquidez que penaliza sistemáticamente a los actores no institucionales.
-De forma paralela, la globalización del mercado laboral y la consolidación del empleo remoto han dado lugar a un cambio demográfico sin precedentes: la emergencia de una comunidad global de nómadas digitales, profesionales independientes y emprendedores tecnológicos. Este perfil demográfico no demanda la propiedad rígida y analógica del siglo pasado, sino soluciones habitacionales flexibles, líquidas y de alta conectividad que fomenten el capital social.
+De forma paralela, la globalización del mercado laboral y la consolidación del empleo remoto han dado lugar a un cambio demográfico sin precedentes: la emergencia de una comunidad global de nómadas digitales, profesionales independientes y emprendedores tecnológicos.
 
 En la intersección de estas dos realidades nace BrickHome, un protocolo concebido como una comunidad integrada que redefine la explotación de activos inmobiliarios mediante el modelo operativo del co-living, apalancado en tecnología de registro distribuido (blockchain).
 
 1.2 Planteamiento del Problema
 El problema central que aborda este Trabajo Fin de Máster es la ineficiencia estructural en el acceso, financiación y gestión de activos inmobiliarios para inversores no institucionales.
 
-En el planteamiento fundacional de BrickHome, esta problemática se define como:
-
-Una iliquidez endémica combinada con elevados costes de fricción e intermediación, afectando especialmente a los nuevos modelos residenciales demandados por la economía digital.
+En el planteamiento fundacional de BrickHome, esta problemática se define como una iliquidez endémica combinada con elevados costes de fricción e intermediación, afectando especialmente a los nuevos modelos residenciales demandados por la economía digital.
 
 Sin embargo, la complejidad del proyecto se localiza en la interfaz entre el espacio físico, el marco jurídico tradicional y el ecosistema criptográfico. La pregunta de investigación no radica en si la blockchain puede emitir un activo digital, sino en cómo integrarlo de manera armónica, segura y conforme a derecho con una estructura real de propiedad.
 
