@@ -80,3 +80,39 @@ brickhome-rwa/
 ├── scripts/                      # Scripts de despliegue (deploy.js)
 │
 └── frontend/                     # Interfaz de la dApp (Ej. React/Next.js)
+
+
+---
+
+## Características Técnicas
+
+*   **Arquitectura de Doble Token:** Separación entre inversión financiera (BHT-ELZ1) y utilidad comunitaria (RLB).
+*   **Cumplimiento Regulatorio:** Integración de módulos KYC/AML nativos en contratos inteligentes.
+*   **Seguridad Institucional:** Uso de PKI (Infraestructura de Claves Públicas) y HSM para gestión de claves.
+*   **Privacidad:** Implementación de DIDs y Pruebas de Conocimiento Cero (ZKP) para proteger datos de inversores.
+*   **Ethereum Layer 2:** Despliegue en red de capa 2 para garantizar escalabilidad y bajos costes de gas.
+
+---
+
+## Documentación
+
+Para profundizar en los aspectos técnicos, financieros y legales del proyecto, consulte los siguientes documentos:
+
+*   [Leer Resumen Ejecutivo](docs/01-whitepaper/00-resumen-ejecutivo.md)
+*   [Ver Marco Teórico y RWA](docs/01-whitepaper/02-marco-teorico.md)
+*   [Ver Términos de la STO](docs/03-contratos-documentos/termino-sto.md)
+*   [Ver Análisis de Seguridad (Lazarus)](docs/04-audits-seguridad/analisis-lazarus.md)
+
+---
+
+## Aviso Legal y Descargo de Responsabilidad
+
+> **IMPORTANTE:** Este repositorio y su contenido constituyen un entregable académico (TFM) y una propuesta de investigación aplicada.
+>
+> Este documento **NO** constituye una oferta pública de valores, recomendación de inversión ni asesoramiento legal, financiero o de ciberseguridad. Las cifras, modelos financieros y arquitectura técnica son supuestos académicos y requieren un due diligence integral antes de cualquier emisión real.
+
+---
+
+## Licencia
+
+Este proyecto se distribuye bajo la licencia MIT. Consulte el archivo `LICENSE` para más detalles.
