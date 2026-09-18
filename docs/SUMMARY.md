@@ -53,4 +53,3 @@ brickhome-rwa/
 ├── docs/               # Documentación completa (GitBook)
 ├── scripts/            # Scripts de despliegue (deploy.js)
 └── frontend/           # Interfaz de la dApp (React)
-
