@@ -100,7 +100,7 @@ Para profundizar en los aspectos técnicos, financieros y legales del proyecto, 
 
 *   [Leer Resumen Ejecutivo](docs/01-whitepaper/00-resumen-ejecutivo.md)
 *   [Ver Marco Teórico y RWA](docs/01-whitepaper/02-marco-teorico.md)
-*   [Ver Términos de la STO](docs/03-contratos-documentos/termino-sto.md)
+*   [Ver Términos de la STO]([docs/03-contratos-documentos/termino-sto.md](https://github.com/Looruu/BrickHome/blob/main/docs/03-contratos-documentos/terminos-sto.md))
 *   [Ver Análisis de Seguridad (Lazarus)](docs/04-audits-seguridad/analisis-lazarus.md)
 
 ---
