@@ -54,8 +54,8 @@ IEBS Business School
 - **Nadia Marcela Mira**  
 - **Álvaro Arévalo**
 
-**Tutor / Tutora:** [Nombre del Tutor]  
-**Convocatoria:** Julio 2026
+
+**Convocatoria:** 2025/2026
 
 ---
 
