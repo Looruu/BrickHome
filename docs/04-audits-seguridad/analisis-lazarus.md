@@ -1,69 +1,123 @@
-Análisis de Amenaza: Patrón Lazarus / TraderTraitor
-Fecha del Informe: Julio 2026Clasificación: Confidencial / Uso InternoAutor: Comité de Ciberseguridad BrickHome
+# Análisis de Amenaza: Patrón Lazarus / TraderTraitor  
+**Fecha del Informe:** Julio 2026  
+**Clasificación:** Confidencial / Uso Interno  
+**Autor:** Comité de Ciberseguridad BrickHome
 
-1. Resumen Ejecutivo
-El grupo Lazarus (vinculado a la República Popular Democrática de Corea) es una de las amenazas persistentes avanzadas (APT) más sofisticadas y activas en el ecosistema de criptoactivos. Recientemente, se ha identificado un patrón de ataque específico denominado "TraderTraitor" o "BeagleBoyz", dirigido a entidades fintech y protocolos DeFi.
+---
 
-Este informe analiza cómo BrickHome RWA, al gestionar activos financieros reales (RWA) y tesorerías on-chain, entra en el radar de este actor y qué medidas se han implementado para neutralizar este vector de ataque.
+## 1. Resumen Ejecutivo
+El grupo **Lazarus**, vinculado a la República Popular Democrática de Corea y responsable de ataques graves contra entidades financieras y protocolos cripto, mantiene operaciones activas en el ecosistema blockchain.  
+Uno de sus patrones más característicos es **TraderTraitor** (también conocido como BeagleBoyz), un vector de ataque centrado en ingeniería social y compromiso de la cadena de suministro.
 
-2. Vector de Ataque: TraderTraitor
-A diferencia de los atacantes tradicionales que buscan vulnerabilidades en el código Solidity (bugs), el grupo Lazarus se especializa en ataques a la cadena de suministro de desarrollo y la ingeniería social dirigida a equipos internos.
+Dado que BrickHome RWA gestiona activos financieros reales (RWA) y tesorerías on‑chain, este actor constituye una amenaza relevante.  
+El presente informe detalla el vector de ataque y las medidas implementadas para neutralizarlo.
 
-2.1. Metodología (TTPs)
-Infiltración (Social Engineering):
-Los atacantes se hacen pasar por reclutadores de VC (Capital Riesgo) o headhunters en LinkedIn.
-Envían ofertas de empleo tentadoras a desarrolladores senior de alto perfil.
-Como parte del "proceso de contratación", piden al candidato ejecutar o revisar código o herramientas "de prueba".
-Compromiso de Supply Chain:
-Las herramientas o archivos proporcionados contienen malware (RATs - Remote Access Trojans).
-Una vez ejecutado en la laptop del desarrollador, el malware roba credenciales, claves privadas de SSH y, crucialmente, frases semilla de wallets.
-Movimiento Lateral y Exfiltración:
-Con acceso al entorno del desarrollador, los atacantes buscan acceso a repositorios privados de GitHub con claves de API, oráculos o wallets de despliegue.
-3. Impacto Potencial en BrickHome RWA
-BrickHome utiliza una arquitectura de Multisig (Gnosis Safe 3/5) para la administración de la tesorería y el despliegue de contratos.
+---
 
-Escenario de Ataque Simulado
-Si el grupo Lazarus compromete las cuentas de 3 de los 5 signatarios del Multisig:
+## 2. Vector de Ataque: TraderTraitor
 
-Consenso Malicioso: Los atacantes coordinan una transacción no autorizada para drenar la totalidad de la tesorería (USDC) a una mixer o exchange no KYC.
-Reemplazo de Contratos: Modifican el contrato RentDistributor o ComplianceModule para permitir transferencias sin autorización KYC (bypassing the security module).
-Resultado: Pérdida total de los fondos de los inversores y destrucción irreversible de la reputación del proyecto.
-4. Estrategia de Mitigación: "Defensa en Profundidad"
-Para contrarrestar específicamente el patrón Lazarus, BrickHome implementa las siguientes contramedidas técnicas y operativas.
+A diferencia de atacantes que buscan vulnerabilidades en Solidity, Lazarus se especializa en comprometer **personas, procesos y entornos de desarrollo**.
 
-4.1. Verificación Fuera de Banda (Out-of-Band Verification)
-Todas las transacciones críticas propuestas en el Multisig requieren una confirmación a través de un canal separado e independiente de la plataforma web.
+### 2.1 Metodología (TTPs)
 
-Protocolo:
+#### Infiltración (Ingeniería Social)
+- Suplantación de reclutadores de fondos VC o headhunters en LinkedIn.  
+- Envío de ofertas laborales atractivas a desarrolladores senior.  
+- Solicitud de ejecutar herramientas o revisar código como parte del “proceso de selección”.
 
-Un administrador propone una transacción en Gnosis Safe.
-El sistema envía automáticamente notificaciones a los demás signatarios.
-Obligación: Cada signatario debe confirmar la legitimidad de la transacción vía llamada de voz o mensaje cifrado en Signal/Telegram con un código de validación (ej. "¿Confirma el pago al proveedor X por cantidad Y?").
-Si hay discrepancia, se revoca la firma inmediatamente.
-4.2. Hardening de Entornos de Despliegue (Air-Gapping)
-Se prohíbe el uso de laptops personales o de uso general para firmar transacciones multisig.
+#### Compromiso de Supply Chain
+- Los archivos proporcionados contienen **malware tipo RAT** (Remote Access Trojan).  
+- Una vez ejecutado, el malware roba credenciales, claves SSH y frases semilla de wallets.
 
-Política de Dispositivos:
+#### Movimiento Lateral y Exfiltración
+- Acceso a repositorios privados (GitHub).  
+- Robo de claves de API, credenciales de oráculos o wallets de despliegue.  
+- Preparación de transacciones maliciosas o modificaciones de contratos.
 
-Dispositivos Dedicados: Uso de laptops "burner" o dedicadas exclusivamente para operaciones cripto (sin navegación web, sin correo electrónico personal).
-Sistemas Operativos: Preferencia por sistemas basados en Linux (Tails, Qubes) o entornos virtualizados aislados.
-4.3. Infraestructura de Claves Públicas (PKI) y HSM
-Para eliminar el riesgo de robo de archivos de claves (keystore files):
+---
 
-Hardware Security Modules (HSM): Las claves maestras de despliegue nunca se exportan a un archivo digital. Residen en módulos hardware (ej. Fireblocks, AWS CloudHSM) que requieren aprobación MFA (Multi-Factor Authentication) para firmar.
-PKI Empresarial: El uso de tokens físicos (YubiKey) para firmar commits en Git y accesos VPN, vinculando la identidad digital a un dispositivo físico intransferible.
-4.4. Segregación de Privilegios
-Principio de Mínimo Privilegio: Los desarrolladores de frontend no tienen acceso a las claves de despliegue. Los auditores no pueden ejecutar transacciones financieras.
-Rotación de Claves: Rotación programada de claves de API y acceso a repositorios cada 90 días, invalidando cualquier credencial que pueda haber sido comprometida silenciosamente.
-5. Matriz de Control de Efectividad
-Control	Eficacia contra Phishing	Eficacia contra Malware	Coste Operativo
-Multisig 3/5	Medio	Bajo	Bajo
-Verificación Fuera de Banda	Alto	Alto	Medio
-Laptops Dedicadas	Bajo	Alto	Alto
-HSM / Custodia Institucional	Muy Alto	Muy Alto	Medio-Alto
-6. Conclusiones y Recomendaciones
-El patrón Lazarus representa una amenaza existencial para cualquier gestión de activos digitales que dependa de claves privadas almacenadas en endpoints personales.
+## 3. Impacto Potencial en BrickHome RWA
 
-BrickHome RWA adopta una postura defensiva agresiva combinando HSMs (para eliminar la superficie de ataque de robo de software) y Verificación Fuera de Banda (para prevenir la autorización de transacciones maliciosas por parte de personal comprometido).
+BrickHome utiliza una arquitectura **Multisig Gnosis Safe 3/5** para la administración de tesorería y despliegue de contratos.
 
-Recomendación Continua: Realizar simulaciones de ingeniería social (Red Teaming) semestrales para probar la resistencia del equipo operativo ante estos escenarios avanzados.
+### Escenario de Ataque Simulado
+
+Si Lazarus compromete las cuentas de **3 de los 5 signatarios**:
+
+- **Consenso Malicioso:** Firma coordinada de una transacción para drenar la tesorería (USDC) hacia un mixer o exchange no KYC.  
+- **Reemplazo de Contratos:** Modificación del RentDistributor o ComplianceModule para permitir transferencias sin KYC.  
+- **Resultado:** Pérdida total de fondos y daño reputacional irreversible.
+
+---
+
+## 4. Estrategia de Mitigación: Defensa en Profundidad
+
+BrickHome implementa contramedidas específicas para neutralizar el patrón Lazarus.
+
+### 4.1 Verificación Fuera de Banda (Out‑of‑Band Verification)
+
+Todas las transacciones críticas del Multisig requieren confirmación por un canal independiente:
+
+**Protocolo:**
+1. Un administrador propone la transacción en Gnosis Safe.  
+2. Los signatarios reciben notificación automática.  
+3. Cada signatario debe confirmar vía llamada o mensaje cifrado (Signal/Telegram) con código de validación.  
+4. Si existe discrepancia, la firma se revoca inmediatamente.
+
+---
+
+### 4.2 Hardening de Entornos de Despliegue (Air‑Gapping)
+
+Se prohíbe el uso de laptops personales para firmar transacciones.
+
+**Política de Dispositivos:**
+- Laptops dedicadas (“burner”) sin navegación web ni correo personal.  
+- Preferencia por sistemas Linux endurecidos (Tails, Qubes OS).  
+- Entornos virtualizados aislados para operaciones críticas.
+
+---
+
+### 4.3 Infraestructura de Claves Públicas (PKI) y HSM
+
+Para eliminar el riesgo de robo de claves:
+
+- **HSM (Hardware Security Modules):** Las claves maestras nunca se exportan; residen en hardware seguro (Fireblocks, CloudHSM).  
+- **MFA obligatorio:** Firma de transacciones solo con autenticación multifactor.  
+- **PKI Empresarial:** Uso de YubiKeys para firmar commits y accesos VPN.
+
+---
+
+### 4.4 Segregación de Privilegios
+
+- **Principio de Mínimo Privilegio:**  
+  - Desarrolladores frontend no tienen acceso a claves de despliegue.  
+  - Auditores no pueden ejecutar transacciones financieras.
+
+- **Rotación de Claves:**  
+  - Rotación cada 90 días de claves de API y accesos a repositorios.  
+  - Invalida credenciales comprometidas silenciosamente.
+
+---
+
+## 5. Matriz de Control de Efectividad
+
+| Control | Eficacia contra Phishing | Eficacia contra Malware | Coste Operativo |
+|--------|---------------------------|--------------------------|------------------|
+| Multisig 3/5 | Medio | Bajo | Bajo |
+| Verificación Fuera de Banda | Alto | Alto | Medio |
+| Laptops Dedicadas | Bajo | Alto | Alto |
+| HSM / Custodia Institucional | Muy Alto | Muy Alto | Medio‑Alto |
+
+---
+
+## 6. Conclusiones y Recomendaciones
+
+El patrón Lazarus constituye una amenaza crítica para cualquier infraestructura que dependa de claves privadas en endpoints personales.  
+BrickHome adopta una postura defensiva agresiva combinando:
+
+- **HSMs** → Eliminan la superficie de ataque basada en robo de software.  
+- **Verificación Fuera de Banda** → Previene la autorización de transacciones maliciosas incluso si un signatario ha sido comprometido.
+
+### Recomendación Continua
+Realizar ejercicios de **Red Teaming** semestrales para evaluar la resistencia del equipo ante ingeniería social avanzada.
+
