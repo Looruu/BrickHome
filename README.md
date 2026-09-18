@@ -81,7 +81,7 @@ brickhome-rwa/
 │
 └── frontend/                     # Interfaz de la dApp (Ej. React/Next.js)
 
-
+````
 ---
 
 ## Características Técnicas
