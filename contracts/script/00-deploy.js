@@ -1,10 +1,6 @@
 const hre = require("hardhat");
 const fs = require("fs");
-
-// Configuración de red
-// Para producción, estas direcciones deberían venir de .env o argumentos de línea de comandos
-const TOKEN_SUPPLY = hre.ethers.utils.parseUnits("1000000", 18); // 1 Millón de Tokens
-const MOCK_STABLECOIN_ADDRESS = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"; // Ejemplo USDC (Mainnet)
+require("dotenv").config(); // Carga variables de entorno (.env)
 
 async function main() {
   console.log("\n🚀 Iniciando despliegue de BrickHome RWA...");
@@ -12,95 +8,118 @@ async function main() {
 
   const [deployer] = await hre.ethers.getSigners();
   console.log("👤 Desplegando con la cuenta:", deployer.address);
-  console.log("💰 Saldo de la cuenta:", (await deployer.getBalance()).toString());
-
-  // --- 1. Despliegue del ComplianceModule (Sin dependencias) ---
-  console.log("\n📜 Desplegando ComplianceModule...");
-  const ComplianceModule = await hre.ethers.getContractFactory("ComplianceModule");
-  const complianceModule = await ComplianceModule.deploy();
-  await complianceModule.deployed();
   
-  console.log("✅ ComplianceModule desplegado en:", complianceModule.address);
-
-  // --- 2. Despliegue del BHT-ELZ1 (Depende de ComplianceModule) ---
-  console.log("\n📜 Desplegando BHT-ELZ1 (Security Token)...");
-  const BHT_ELZ1 = await hre.ethers.getContractFactory("BHT_ELZ1");
+  // Verificar que la cuenta tiene saldo (Gas Check)
+  const balance = await deployer.getBalance();
+  console.log("💰 Saldo de la cuenta:", hre.ethers.utils.formatEther(balance), "ETH");
   
-  // Constructor: uint256 _initialSupply, address _complianceAddress
-  const bhtToken = await BHT_ELZ1.deploy(
-    TOKEN_SUPPLY, 
-    complianceModule.address
-  );
-  await bhtToken.deployed();
-
-  console.log("✅ BHT-ELZ1 desplegado en:", bhtToken.address);
-  console.log("   Total Supply:", hre.ethers.utils.formatUnits(TOKEN_SUPPLY, 18), "BHT");
-  console.log("   ComplianceModule vinculado:", complianceModule.address);
-
-  // --- 3. Despliegue del RentDistributor (Depende de BHT-ELZ1) ---
-  console.log("\n📜 Desplegando RentDistributor...");
-  const RentDistributor = await hre.ethers.getContractFactory("RentDistributor");
-
-  // NOTA: Para un test real, necesitas desplegar un MockERC20 antes si no existe en la red.
-  // Usamos MOCK_STABLECOIN_ADDRESS como placeholder.
-  // Constructor: address _bhtTokenAddress, address _paymentTokenAddress
-  const rentDistributor = await RentDistributor.deploy(
-    bhtToken.address,
-    MOCK_STABLECOIN_ADDRESS 
-  );
-  await rentDistributor.deployed();
-
-  console.log("✅ RentDistributor desplegado en:", rentDistributor.address);
-  console.log("   Token de Pago (Stablecoin):", MOCK_STABLECOIN_ADDRESS);
-
-  // --- 4. Guardar Direcciones en un archivo JSON ---
-  const deploymentData = {
-    network: hre.network.name,
-    chainId: (await hre.ethers.provider.getNetwork()).chainId,
-    deployer: deployer.address,
-    timestamp: new Date().toISOString(),
-    contracts: {
-      ComplianceModule: complianceModule.address,
-      BHT_ELZ1: bhtToken.address,
-      RentDistributor: rentDistributor.address
-    }
-  };
-
-  const deploymentsDir = "./deployments";
-  if (!fs.existsSync(deploymentsDir)) {
-    fs.mkdirSync(deploymentsDir);
+  if (balance.eq(0)) {
+    throw new Error("❌ ERROR: La cuenta desplegadora no tiene saldo para pagar el gas.");
   }
 
-  fs.writeFileSync(
-    `${deploymentsDir}/${hre.network.name}.json`,
-    JSON.stringify(deploymentData, null, 2)
-  );
+  // --- CONFIGURACIÓN DINÁMICA ---
+  const TOKEN_SUPPLY = hre.ethers.utils.parseUnits("1000000", 18);
+  
+  // Selección de Stablecoin según la red
+  let MOCK_STABLECOIN_ADDRESS;
+  if (hre.network.name === "hardhat" || hre.network.name === "localhost") {
+    // En local, desplegaremos un mock primero (simplificado aquí para usar una dirección dummy)
+    MOCK_STABLECOIN_ADDRESS = "0x0000000000000000000000000000000000000001"; 
+    console.log("⚠️ Modo Local/Test detectado. Usando dirección Dummy para Stablecoin.");
+  } else {
+    // Si es una red pública (Mainnet o Testnet), usar la correcta
+    // Sepolia USDC (Ejemplo real) o Mainnet USDC
+    MOCK_STABLECOIN_ADDRESS = process.env.STABLECOIN_ADDRESS || "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";
+    console.log("💲 Stablecoin Objetivo:", MOCK_STABLECOIN_ADDRESS);
+  }
 
-  console.log("\n📝 Archivo de despliegue guardado en:", `${deploymentsDir}/${hre.network.name}.json`);
+  try {
+    // --- 1. Despliegue del ComplianceModule ---
+    console.log("\n📜 [1/3] Desplegando ComplianceModule...");
+    const ComplianceModule = await hre.ethers.getContractFactory("ComplianceModule");
+    const complianceModule = await ComplianceModule.deploy();
+    await complianceModule.deployed();
+    console.log("✅ ComplianceModule desplegado en:", complianceModule.address);
 
-  // --- 5. Verificación en Etherscan (Opcional, solo si no es localhost) ---
-  if (hre.network.name !== "localhost" && hre.network.name !== "hardhat") {
-    console.log("\n🔍 Esperando confirmaciones de bloques para verificación...");
-    await bhtToken.deployTransaction.wait(5); // Esperar 5 bloques
-    
-    console.log("⏳ Verificando contratos en Etherscan...");
-    try {
-      await hre.run("verify:verify", {
-        address: complianceModule.address,
-        constructorArguments: [],
-      });
-      await hre.run("verify:verify", {
-        address: bhtToken.address,
-        constructorArguments: [TOKEN_SUPPLY, complianceModule.address],
-      });
-      await hre.run("verify:verify", {
-        address: rentDistributor.address,
-        constructorArguments: [bhtToken.address, MOCK_STABLECOIN_ADDRESS],
-      });
-      console.log("✅ Verificación completada.");
-    } catch (error) {
-      console.error("❌ Error en verificación (puede que ya esté verificado):", error.message);
+    // --- 2. Despliegue del BHT-ELZ1 ---
+    console.log("\n📜 [2/3] Desplegando BHT-ELZ1 (Security Token)...");
+    const BHT_ELZ1 = await hre.ethers.getContractFactory("BHT_ELZ1");
+    const bhtToken = await BHT_ELZ1.deploy(
+      TOKEN_SUPPLY, 
+      complianceModule.address
+    );
+    await bhtToken.deployed();
+    console.log("✅ BHT-ELZ1 desplegado en:", bhtToken.address);
+    console.log("   Total Supply:", hre.ethers.utils.formatUnits(TOKEN_SUPPLY, 18), "BHT");
+
+    // --- 3. Despliegue del RentDistributor ---
+    console.log("\n📜 [3/3] Desplegando RentDistributor...");
+    const RentDistributor = await hre.ethers.getContractFactory("RentDistributor");
+    const rentDistributor = await RentDistributor.deploy(
+      bhtToken.address,
+      MOCK_STABLECOIN_ADDRESS 
+    );
+    await rentDistributor.deployed();
+    console.log("✅ RentDistributor desplegado en:", rentDistributor.address);
+
+    // --- 4. Guardar Direcciones ---
+    const deploymentData = {
+      network: hre.network.name,
+      chainId: (await hre.ethers.provider.getNetwork()).chainId.toString(),
+      deployer: deployer.address,
+      timestamp: new Date().toISOString(),
+      contracts: {
+        ComplianceModule: complianceModule.address,
+        BHT_ELZ1: bhtToken.address,
+        RentDistributor: rentDistributor.address,
+        Stablecoin: MOCK_STABLECOIN_ADDRESS
+      }
+    };
+
+    const deploymentsDir = "./deployments";
+    if (!fs.existsSync(deploymentsDir)) {
+      fs.mkdirSync(deploymentsDir);
     }
+
+    fs.writeFileSync(
+      `${deploymentsDir}/${hre.network.name}.json`,
+      JSON.stringify(deploymentData, null, 2)
+    );
+    console.log("\n📝 Archivo de despliegue guardado.");
+
+    // --- 5. Verificación (Solo si no es Hardhat) ---
+    if (hre.network.name !== "hardhat" && hre.network.name !== "localhost") {
+      console.log("\n🔍 Iniciando verificación en Etherscan...");
+      
+      // Esperar a que el último contrato (RentDistributor) tenga suficientes confirmaciones
+      console.log("⏳ Esperando 5 confirmaciones de bloque...");
+      await rentDistributor.deployTransaction.wait(5);
+      
+      // Función helper para verificar con manejo de errores individual
+      const verifyContract = async (address, name, args) => {
+        try {
+          console.log(`   Verificando ${name}...`);
+          await hre.run("verify:verify", {
+            address: address,
+            constructorArguments: args,
+          });
+          console.log(`   ✅ ${name} verificado.`);
+        } catch (error) {
+          console.error(`   ❌ Error verificando ${name}: ${error.message}`);
+        }
+      };
+
+      await verifyContract(complianceModule.address, "ComplianceModule", []);
+      await verifyContract(bhtToken.address, "BHT_ELZ1", [TOKEN_SUPPLY, complianceModule.address]);
+      await verifyContract(rentDistributor.address, "RentDistributor", [bhtToken.address, MOCK_STABLECOIN_ADDRESS]);
+    }
+
+    console.log("\n🎉 Despliegue finalizado con éxito.");
+
+  } catch (error) {
+    console.error("\n💥 CRITICAL ERROR durante el despliegue:");
+    console.error(error);
+    process.exit(1); // Salir con código de error
   }
 }
 
