@@ -1,10 +1,10 @@
-## 🚀 Despliegue del Protocolo en Sepolia
+## Despliegue del Protocolo en Sepolia
 
 Para desplegar los Smart Contracts de BrickHome RWA en la red **Sepolia**, sigue los pasos detallados a continuación.
 
 ---
 
-### 1️⃣ Requisitos Previos
+### 1 Requisitos Previos
 
 Antes de ejecutar el comando de despliegue, asegúrate de:
 
@@ -19,7 +19,7 @@ Antes de ejecutar el comando de despliegue, asegúrate de:
 
 ---
 
-### 2️⃣ Comando de Despliegue
+### 2 Comando de Despliegue
 
 Ejecuta el siguiente comando para desplegar los contratos en **Sepolia**:
 
