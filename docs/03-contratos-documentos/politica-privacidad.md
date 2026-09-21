@@ -1,7 +1,7 @@
 # Política de Privacidad y Protección de Datos Personales  
 **Responsable del Tratamiento:** BrickHome SPV S.A. de C.V.  
 **Domicilio:** República de El Salvador  
-**Última Actualización:** Julio 2026  
+**Última Actualización:** Septiembre 2026  
 **Versión:** 1.0  
 
 ---
