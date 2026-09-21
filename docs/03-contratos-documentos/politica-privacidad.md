@@ -1,119 +1,158 @@
 # Política de Privacidad y Protección de Datos Personales  
-**Última actualización:** Julio 2026  
-**Versión:** 1.0
+**Responsable del Tratamiento:** BrickHome SPV S.A. de C.V.  
+**Domicilio:** República de El Salvador  
+**Última Actualización:** Julio 2026  
+**Versión:** 1.0  
 
 ---
 
-## 1. Responsable del Tratamiento
-El responsable del tratamiento de los datos personales es la **Sociedad de Propósito Especial (SPV)** constituida en el marco del proyecto BrickHome RWA (“El Responsable”).
+## 1. Compromiso con la Privacidad
 
-El Responsable se compromete a cumplir con:
+BrickHome SPV S.A. de C.V. (en adelante, “el Responsable”) se compromete a cumplir con:
 
 - El **Reglamento General de Protección de Datos (RGPD)** de la Unión Europea.  
 - La **Ley de Protección de Datos Personales de El Salvador**.
 
-Garantizando un tratamiento **lícito, leal, transparente y seguro** de la información.
+BrickHome implementa un modelo de **Privacidad por Diseño (Privacy by Design)**, minimizando la exposición de datos personales mediante tecnologías avanzadas:
+
+- **Identidades Descentralizadas (DIDs)**  
+- **Pruebas de Conocimiento Cero (ZKPs)**  
 
 ---
 
-## 2. Datos Recopilados
-En el ecosistema BrickHome se recopilan dos categorías de datos:
+## 2. Datos Recopilados y Clasificación
 
-### A. Datos de Identificación (Off‑Chain)
-Necesarios para procesos de **KYC/AML** asociados a la adquisición del token **BHT‑ELZ1**.
+El ecosistema BrickHome gestiona dos categorías de datos:
 
-Incluyen:
+---
 
-- Documento de identidad (DNI, Pasaporte).  
-- Prueba de domicilio.  
-- Número de identificación fiscal.  
-- Información sobre origen de fondos.
+### A. Datos de Identificación Personal (Off-Chain)
 
-**Nota:**  
+Requeridos para procesos **KYC/AML** necesarios para adquirir el token **BHT-ELZ1**:
+
+- Documento de identidad (DNI, Pasaporte)  
+- Prueba de domicilio  
+- Número de identificación fiscal  
+- Información sobre origen de fondos  
+
+**Almacenamiento:**  
 Estos datos **NO** se almacenan en la blockchain pública.  
-Se guardan en bases de datos cifradas gestionadas por proveedores certificados de cumplimiento.
+Se custodian en bases de datos cifradas con **AES-256**, gestionadas por proveedores certificados.
 
 ---
 
-### B. Datos de Transacción (On‑Chain)
-Derivados de la actividad pública en la blockchain (Ethereum L2):
+### B. Datos de Transacción (On-Chain)
 
-- Dirección de la billetera (wallet address).  
-- Histórico de transacciones.  
-- Timestamp de operaciones.
+Datos públicos generados en la red blockchain (Ethereum Layer 2):
 
-**Advertencia:**  
-Por la naturaleza inmutable de la blockchain, estos datos **son públicos y no pueden ser eliminados**.
+- Dirección de la billetera (Wallet Address)  
+- Histórico de transferencias  
+- Balances de tokens  
+
+**Almacenamiento:**  
+Por la naturaleza inmutable de la blockchain, estos datos son **públicos y permanentes**.
 
 ---
 
-## 3. Privacidad por Diseño: DIDs y ZKPs
-BrickHome RWA adopta una arquitectura alineada con **Privacy by Design** y **Privacy by Default**.
+## 3. Tecnologías de Privacidad: DIDs y ZKPs
 
-### Identidad Descentralizada (DID)
-En lugar de almacenar datos personales en bases centralizadas:
+### 3.1 Identidades Descentralizadas (DIDs)
 
-- El usuario mantiene la soberanía sobre su identidad.  
-- El sistema solo valida un identificador único y anónimo.  
-- No se almacena el documento completo en la base de datos del proyecto.
+En lugar de vincular datos personales directamente a una wallet, BrickHome utiliza **DIDs (estándar W3C)**:
 
-### Pruebas de Conocimiento Cero (ZKP)
-Utilizadas para validaciones sensibles (edad, acreditación, nacionalidad, etc.).
+- El usuario genera un identificador único:  
+  `did:ethr:0x...`
+- El contrato `DIDRegistry.sol` vincula el DID a la wallet.  
+- El sistema verifica el DID **sin almacenar documentos personales en la blockchain**.
 
-**Mecanismo:**  
-El usuario genera una prueba criptográfica que demuestra que cumple una condición.
+---
+
+### 3.2 Pruebas de Conocimiento Cero (ZKPs)
+
+Utilizadas para validaciones regulatorias sin exponer datos sensibles.
+
+**Funcionamiento:**
+
+- El usuario genera una prueba criptográfica que demuestra una afirmación sin revelar los datos subyacentes.
+
+**Ejemplo:**
+
+Un inversor puede demostrar que:
+
+- Es mayor de 18 años  
+- Es residente en un país OCDE  
+
+**Sin revelar:**
+
+- Fecha de nacimiento  
+- Dirección exacta  
 
 **Resultado:**  
-El sistema valida la prueba **sin acceder a los datos subyacentes**, reduciendo drásticamente la superficie de ataque.
+El contrato inteligente aprueba la transacción basándose únicamente en la validez de la prueba ZKP.
 
 ---
 
-## 4. Finalidad del Tratamiento
-Los datos se tratarán para:
+## 4. Derechos del Usuario (RGPD)
 
-- **Cumplimiento Normativo:** KYC/AML exigido por MiCA, CNAD y otras autoridades.  
-- **Gestión de la Inversión:** Distribución de rendimientos y comunicaciones operativas/fiscales.  
-- **Gestión de la Comunidad:** Acceso a eventos y funciones del ecosistema RLB (solo nombre y correo).
+El usuario, como titular de los datos personales **off-chain**, tiene derecho a:
 
----
+- **Acceso (Art. 15):** Obtener copia de los datos personales.  
+- **Rectificación (Art. 16):** Corregir datos inexactos.  
+- **Supresión / Derecho al Olvido (Art. 17):** Eliminar datos personales de los servidores del Responsable.  
+- **Limitación On-Chain:**  
+  No es posible borrar transacciones de la blockchain.  
+  Sin embargo, se puede:  
+  - Revocar el DID  
+  - Desvincular la wallet del sistema KYC  
+  - Impedir futuras transferencias  
+- **Portabilidad (Art. 20):** Recibir los datos en formato estructurado.  
+- **Oposición (Art. 21):** Oponerse al tratamiento en ciertos casos.
 
-## 5. Base Legal
-El tratamiento se fundamenta en:
+### Ejercicio de Derechos
 
-- **Obligación Legal:** Verificación de identidad para tokens de seguridad.  
-- **Ejecución de un Contrato:** Relación derivada de la compra de tokens.  
-- **Interés Legítimo:** Seguridad y detección de actividades sospechosas.
-
----
-
-## 6. Derechos del Usuario
-El usuario tiene derecho a:
-
-- **Acceso:** Obtener copia de sus datos personales.  
-- **Rectificación:** Corregir datos inexactos.  
-- **Supresión (Derecho al Olvido):** Eliminar datos personales off‑chain.  
-  - *Excepción:* El historial on‑chain no puede borrarse, pero sí revocarse el acceso a la plataforma y eliminar documentos KYC tras el periodo legal de retención (5–10 años).  
-- **Portabilidad:** Recibir sus datos en formato estructurado.
+Enviar solicitud a:  
+📧 **privacy@brickhome-rwa.com**  
+Incluyendo prueba de identidad.
 
 ---
 
-## 7. Seguridad de los Datos
-El Responsable implementa medidas técnicas y organizativas:
+## 5. Retención de Datos
 
-- **Cifrado AES‑256** para todos los datos off‑chain.  
-- **Control de Acceso** basado en mínimos privilegios.  
-- **PKI Empresarial** para asegurar integridad y autenticidad de comunicaciones internas.
+- **Datos KYC:**  
+  Se retendrán durante el período mínimo exigido por normativa AML (aprox. 5 años tras el cierre de la relación comercial).
+
+- **Datos On-Chain:**  
+  Permanentes e inmutables por diseño de la tecnología blockchain.
 
 ---
 
-## 8. Transferencias Internacionales
-Si los datos deben transferirse a terceros ubicados fuera de la UE/EE.UU.:
+## 6. Seguridad de los Datos
 
-- Se utilizarán **Cláusulas Contractuales Tipo (SCC)** aprobadas por la Comisión Europea,  
-  **o**  
-- Se verificará que el país destino cuente con una **decisión de adecuación**.
+El Responsable implementa medidas técnicas y organizativas avanzadas:
 
-**Excepción:**  
-Las transacciones en blockchain pública no pueden geolocalizarse ni restringirse por jurisdicción.
+- **Cifrado AES-256:**  
+  Para todos los datos personales off-chain.
 
+- **Infraestructura PKI:**  
+  Garantiza integridad y autenticidad en comunicaciones internas y firma de documentos.
 
+- **Hardware Security Modules (HSM):**  
+  Las claves criptográficas se gestionan en hardware dedicado, evitando extracción de claves privadas.
+
+- **Control de Acceso:**  
+  Principio de mínimos privilegios.  
+  Solo personal autorizado puede acceder a datos KYC.
+
+---
+
+## 7. Transferencias Internacionales
+
+Los datos pueden ser transferidos a proveedores tecnológicos ubicados fuera de El Salvador (ej. nodos RPC en EE.UU. o Europa).
+
+Estas transferencias se realizan bajo:
+
+- **Cláusulas Contractuales Tipo (SCC)** aprobadas por la Comisión Europea.  
+
+---
+
+### 📅 Última actualización: Julio 2026
