@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrickHome RWA - Inversor Dashboard</title>
+    <style>
+        :root {
+            --primary: #1a2b3c; /* Azul oscuro institucional */
+            --accent: #d4af37; /* Dorado inmobiliario */
+            --bg: #f4f7f6;
+            --text: #333;
+            --success: #28a745;
+            --danger: #dc3545;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .btn {
+            background-color: var(--accent);
+            color: var(--primary);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--primary);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            color: var(--primary);
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .highlight {
+            font-size: 2rem;
+            font"margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .status-verified { background-color: #d4edda; color: #155724; }
+        .status-unverified { background-color: #f8d7da; color: #721c24; }
+        .status-pending { background-color: #fff3cd; color: #856404; }
+
+        .(var(--accent))-border { border-top-color: var(--accent); }
+
+        .hidden { display: none; }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">BrickHome RWA</div>
+        <button id="btn-connect" class="btn" onclick="connectWallet()">Connect Wallet</button>
+    </header>
+
+    <div class="container">
+        <h1>Investor Dashboard - Playa El Zonte</h1>
+        <p>Bienvenido al piloto de tokenización inmobiliaria. Interactúa con los smart contracts simulados.</p>
+
+        <div class="grid">
+            <!-- Compliance Status -->
+            <div class="card (var(--accent))-border">
+                <h2>1. Cumplimiento (KYC/AML)</h2>
+                <div class="label">Estado ComplianceModule.sol</div>
+                <div id="kyc-status" class="status-badge status-unverified">NO VERIFICADO</div>
+                <br><br>
+                <button id="btn-kyc" class="btn" disabled onclick="verifyKYC()">Simular Verificación KYC</button>
+            </div>
+
+            <!-- Security Token BHT -->
+            <div class="card">
+                <h2>2. Security Token (BHT-ELZ1)</h2>
+                <div class="label">Balance de Token</div>
+                <div class="highlight" id="bht-balance">0 BHT</div>
+                <div class="label">Precio: 1.00 USD</div>
+                <br>
+                <button id="btn-buy" class="btn" disabled onclick="buyTokens()">Comprar 100 BHT (Sim)</button>
+            </div>
+
+            <!-- Rent Distribution -->
+            <div class="card">
+                <h2>3. Distribución de Rentas</h2>
+                <div class="label">Rentas Pendientes (USDC)</div>
+                <div class="highlight" id="rent-pending">0.00 USDC</div>
+                <div class="label">7% Yield Anual Estimado</div>
+                <br>
+                <button id="btn-claim" class="btn" disabled onclick="claimRent()">Reclamar Rentas (Sim)</button>
+            </div>
+
+            <!-- Utility Token RLB -->
+            <div class="card">
+                <h2>4. Utility Token (RLB)</h2>
+               0                <div class="label">Balance de Comunidad</div>
+                <div class="highlight" id="rlb-balance">0 RLB</div>
+                <div class="label">Acceso: Co-living Priority</div>
+                <br>
+                <button id="btn-rlb" class="btn" disabled onclick="claimRLB()">Obtener RLB (Airdrop Sim)</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>BrickHome RWA © 2026 | TFM IEBS Business School | Este es un entorno de simulación académica (Testnet).</p>
+    </footer>
+
+    <script>
+        // --- State Variables ---
+        let isConnected = false;
+        let isKYCVerified = false;
+        let bhtBalance = 0;
+        let rlbBalance = 0;
+        let rentPending = 0;
+
+        // --- Simulation Logic ---
+
+        function connectWallet() {
+            isConnected = true;
+            document.getElementById('btn-connect').textContent = "0x1a2b...9f3e (Connected)";
+            document.getElementById('btn-connect').disabled = true;
+            document.getElementById('btn-kyc').disabled = false; // Enable next step
+            alert("Wallet conectada exitosamente (Simulación).");
+        }
+
+        function verifyKYC() {
+            // Simulates calling ComplianceModule.addUser() by admin, then checking isWhitelisted
+            isKYCVerified = true;
+            document.getElementById('kyc-status').textContent = "VERIFICADO";
+            document.getElementById('kyc-status').className = "status-badge status-verified";
+            document.getElementById('btn-buy').disabled = false; // Unlock buying
+            document.getElementById('btn-claim=RLB').disabled = false;
+            alert("KYC/AML Verificado. Wallet añadida a la Whitelist del ComplianceModule.");
+        }
+
+        function buyTokens() {
+            if (!isKYCVerified) {
+                alert("Transferencia denegada: BHT-ELZ1 requiere KYC.");
+                return;
+            }
+            // Simulates BHT_ELZ1.transfer() passing the onlyCompliant modifier
+            bhtBalance += 100;
+            document.getElementById('bht-balance').textContent = bhtBalance + " BHT";
+            
+            // Calculate pending rent based on new balance
+            updateRentPending();
+            document.getElementById('btn-claim').disabled = false;
+            alert("Compra exitosa. +100 BHT-ELZ1 añadidos a tu balance.");
+        }
+
+        function updateRentPending() {
+            // Simulates RentDistributor.calculatePending(msg.sender)
+            //# Simple yield calc: 7% annual, paid quarterly
+            rentPending = (bhtBalance * 0.07) / 4; 
+            document.getElementById('rent-pending').textContent = rentPending.toFixed(2) + " USDC";
+        }
+
+        function claimRent() {
+            if (rentPending <= 0) return;
+            
+            let claimed = rentPending;
+            rentPending = 0;
+            document.getElementById('rent-pending').textContent = "0.00 USDC";
+            alert("RentDistributor.claim() ejecutado. Has recibido " + claimed.toFixed(2) + " USDC.");
+        }
+
+        function claimRLB() {
+            rlbBalance += 10;
+            document.getElementById('rlb-balance').textContent = rlbBalance + " RLB";
+            alert("Airdrop de Utility Token recibido. +10 RLB.");
+        }
+    </script>
+</body>
+</html>
