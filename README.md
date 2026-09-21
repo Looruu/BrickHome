@@ -4,7 +4,7 @@
 
 ---
 
-## 📘 Presentación del Proyecto
+##  Presentación del Proyecto
 
 **BrickHome RWA** es un protocolo blockchain aplicado diseñado para resolver fricciones estructurales del mercado inmobiliario:
 
@@ -15,13 +15,13 @@
 
 El proyecto plantea la **tokenización de un activo inmobiliario de co-living** ubicado en **Playa El Zonte, El Salvador**, articulado mediante tres pilares fundamentales:
 
-### 🧱 1. Sociedad Vehículo de Propósito Especial (SPV)
+###  1. Sociedad Vehículo de Propósito Especial (SPV)
 Entidad legal que ostenta la titularidad del bien raíz y gestiona los flujos de caja *off-chain*.
 
-### 💼 2. Security Token Offering (STO)
+### 2. Security Token Offering (STO)
 Emisión regulada del token **BHT-ELZ1**, el cual representa derechos contractuales sobre los flujos netos distribuibles del SPV.
 
-### 🔗 3. Capa de Smart Contracts (Ethereum Layer 2)
+###  3. Capa de Smart Contracts (Ethereum Layer 2)
 Lógica *on-chain* desplegada sobre una red pública de segunda capa para asegurar:
 
 - Transparencia inmutable  
@@ -59,7 +59,7 @@ IEBS Business School
 
 ---
 
-## 📁 Estructura del Repositorio
+##  Estructura del Repositorio
 
 Este repositorio aloja la documentación técnica, legal y académica del TFM.
 
