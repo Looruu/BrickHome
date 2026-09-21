@@ -1,13 +1,1 @@
-# GitBook Site Configuration
-site:
-  spaces:
-    - title: BrickHome RWA
-      sections:
-        - title: 1. Whitepaper Académico (TFM)
-          content: ./docs/01-whitepaper
-        - title: 2. Presentación Inversores
-          content: ./docs/02-presentacion
-        - title: 3. Documentación Legal
-          content: ./docs/03-contratos-documentos
-        - title: 4. Auditorías y Seguridad
-          content: ./docs/04-audits-seguridad
+
