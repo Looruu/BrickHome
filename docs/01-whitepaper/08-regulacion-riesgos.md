@@ -1,4 +1,4 @@
-# 🛡️ 8. Marco Regulatorio y Gestión de Riesgos
+#  8. Marco Regulatorio y Gestión de Riesgos
 
 ## 8.1 Contexto Normativo y Estrategia de Cumplimiento
 
