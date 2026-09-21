@@ -1,0 +1,9 @@
+# GitBook Configuration File
+# Archivo ubicado en la RAÍZ del repositorio
+
+# Indicamos que la documentación está dentro de la carpeta 'docs'
+root: ./docs
+
+structure:
+  readme: ./SUMMARY.md
+  summary: ./SUMMARY.md
