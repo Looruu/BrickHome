@@ -1,0 +1,15 @@
+# gitbook-docs.yaml
+# Configuration for GitBook Site Git Sync
+
+structure:
+  spaces:
+    - title: BrickHome RWA Documentation
+      sections:
+        - title: 1. Whitepaper Académico (TFM)
+          content: ./docs/01-whitepaper
+        - title: 2. Presentación Inversores
+          content: ./docs/02-presentacion
+        - title: 3. Documentación Legal
+          content: ./docs/03-contratos-documentos
+        - title: 4. Auditorías y Seguridad
+          content: ./docs/04-audits-seguridad
