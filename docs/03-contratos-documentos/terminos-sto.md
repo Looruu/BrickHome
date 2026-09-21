@@ -1,4 +1,4 @@
-# 📑 Términos y Condiciones de la Security Token Offering (STO)
+# Términos y Condiciones de la Security Token Offering (STO)
 **Emisor:** BrickHome SPV S.A. de C.V.  
 **Token:** BrickHome Token El Zonte 1 (BHT-ELZ1)  
 **Fecha de Oferta:** Julio 2026  
