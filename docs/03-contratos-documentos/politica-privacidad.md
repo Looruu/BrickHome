@@ -108,11 +108,7 @@ El usuario, como titular de los datos personales **off-chain**, tiene derecho a:
 - **Portabilidad (Art. 20):** Recibir los datos en formato estructurado.  
 - **Oposición (Art. 21):** Oponerse al tratamiento en ciertos casos.
 
-### Ejercicio de Derechos
 
-Enviar solicitud a:  
-📧 **privacy@brickhome-rwa.com**  
-Incluyendo prueba de identidad.
 
 ---
 
