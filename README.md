@@ -104,7 +104,7 @@ Para profundizar en los aspectos técnicos, financieros y legales del proyecto, 
 *   [Ver Análisis de Seguridad (Lazarus)](docs/04-audits-seguridad/analisis-lazarus.md)
 
 ---
-<a href="https://www.youtube.com/watch?v=2rBVwsu30A8"><img src="https://www.youtube.com/watch?v=2rBVwsu30A8" width="250"></a>
+[![Ver video](https://img.youtube.com/vi/2rBVwsu30A8/hqdefault.jpg)](https://www.youtube.com/watch?v=2rBVwsu30A8)
 ## Aviso Legal y Descargo de Responsabilidad
 
 > **IMPORTANTE:** Este repositorio y su contenido constituyen un entregable académico (TFM) y una propuesta de investigación aplicada.
